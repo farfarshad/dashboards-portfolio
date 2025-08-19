@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Labour Productivity – Portfolio Mockup</title>
+<style>
+  :root{
+    --bg:#f6f8fc;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --panel:#ffffff;
+    --brand:#2563eb;
+    --good:#10b981;
+    --warn:#f59e0b;
+    --bad:#ef4444;
+    --accent:#7c3aed;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;color:var(--ink);background:var(--bg)}
+  header{padding:18px 22px;background:linear-gradient(90deg,#0f172a,#1e293b);color:#e5e7eb;box-shadow:0 4px 14px rgba(15,23,42,.25);position:sticky;top:0;z-index:10}
+  header h1{margin:0;font-size:18px;letter-spacing:.3px}
+  header .sub{opacity:.85;font-size:12px}
+
+  main{padding:22px;max-width:1200px;margin:0 auto}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px}
+  .chip{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .chip label{font-size:12px;color:var(--muted)}
+  .chip select{border:none;outline:none;background:transparent;color:var(--ink)}
+
+  .grid{display:grid;gap:16px}
+  .kpis{grid-template-columns:repeat(4,minmax(180px,1fr))}
+  .two{grid-template-columns:1.6fr 1fr}
+  .two-even{grid-template-columns:1fr 1fr}
+
+  .panel{background:var(--panel);border-radius:16px;padding:14px;border:1px solid #eef2f7;box-shadow:0 6px 16px rgba(15,23,42,.08);position:relative;overflow:hidden}
+  .panel h3{margin:0 0 12px;font-size:14px;font-weight:700;color:#334155}
+
+  .kpi{color:#0b1020;display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;position:relative;isolation:isolate}
+  .kpi .value{font-size:28px;font-weight:800}
+  .kpi .meta{font-size:12px;color:#1f2937}
+  .kpi .pill{font-size:11px;border-radius:999px;padding:3px 8px;background:rgba(255,255,255,.45);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.6)}
+  .kpi.good{background:linear-gradient(135deg,#34d399,#10b981);color:#052e1a}
+  .kpi.brand{background:linear-gradient(135deg,#60a5fa,#2563eb);color:#07132a}
+  .kpi.warn{background:linear-gradient(135deg,#fde68a,#f59e0b);color:#3a2403}
+  .kpi.bad{background:linear-gradient(135deg,#fecaca,#ef4444);color:#3b0606}
+
+  .placeholder{height:250px;border-radius:12px;background:repeating-linear-gradient(45deg, #f3f4f6, #f3f4f6 10px, #e5e7eb 10px, #e5e7eb 20px);display:flex;align-items:center;justify-content:center;color:#6b7280;border:1px dashed #d1d5db}
+  .placeholder.small{height:180px}
+
+  .chart{height:250px;display:flex;align-items:center;justify-content:center}
+  .chart svg{width:100%;height:100%}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+  .legend .sw{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px}
+
+  @media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.two,.two-even{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Labour Productivity Dashboard</h1>
+    <div class="sub">Portfolio sample (mock data)</div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Filters">
+      <div class="chip"><label>Project</label>
+        <select><option>All Projects</option><option>Hospital Expansion</option><option>Data Centre</option></select>
+      </div>
+      <div class="chip"><label>Trade</label>
+        <select><option>All Trades</option><option>Electrical</option><option>Mechanical</option><option>Plumbing</option></select>
+      </div>
+      <div class="chip"><label>Period</label>
+        <select><option>Last 12 months</option><option>Last 90 days</option><option>YTD</option></select>
+      </div>
+      <div class="chip"><label>Region</label>
+        <select><option>All</option><option>Ottawa</option><option>Toronto</option><option>Calgary</option></select>
+      </div>
+    </section>
+
+    <!-- KPI row -->
+    <section class="grid kpis" aria-label="KPIs">
+      <div class="kpi brand" role="group" aria-label="Productivity">
+        <div>
+          <div class="value" id="kpiProd">92%</div>
+          <div class="meta">Labour Productivity</div>
+        </div>
+        <span class="pill" id="kpiProdTrend">▲ 3.1% vs last period</span>
+      </div>
+      <div class="kpi good" role="group" aria-label="Planned vs Actual">
+        <div>
+          <div class="value" id="kpiPva">1,250 / 1,100</div>
+          <div class="meta">Planned vs Actual Hours</div>
+        </div>
+        <span class="pill">On track</span>
+      </div>
+      <div class="kpi warn" role="group" aria-label="Variance">
+        <div>
+          <div class="value" id="kpiVar">+150h</div>
+          <div class="meta">Variance (Hours)</div>
+        </div>
+        <span class="pill">Watchlist</span>
+      </div>
+      <div class="kpi bad" role="group" aria-label="Overtime">
+        <div>
+          <div class="value" id="kpiOt">12%</div>
+          <div class="meta">Overtime Rate</div>
+        </div>
+        <span class="pill">Needs action</span>
+      </div>
+    </section>
+
+    <div style="height:6px"></div>
+
+    <!-- Trend + Breakdown -->
+    <section class="grid two">
+      <div class="panel">
+        <h3>Planned vs Actual Hours (Last 12 months)</h3>
+        <div class="chart" aria-hidden="true">
+          <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="gradBlue" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#93c5fd"/>
+                <stop offset="100%" stop-color="#2563eb"/>
+              </linearGradient>
+              <linearGradient id="gradViolet" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#c4b5fd"/>
+                <stop offset="100%" stop-color="#7c3aed"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="600" height="200" fill="#ffffff"/>
+            <polyline fill="none" stroke="url(#gradBlue)" stroke-width="4" points="10,150 60,120 110,135 160,110 210,115 260,95 310,100 360,85 410,92 460,88 510,80 590,78"/>
+            <polyline fill="none" stroke="url(#gradViolet)" stroke-width="4" points="10,160 60,140 110,145 160,118 210,128 260,110 310,112 360,98 410,108 460,99 510,95 590,90"/>
+          </svg>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:#2563eb"></span>Planned</span><span><span class="sw" style="background:#7c3aed"></span>Actual</span></div>
+        <span class="watermark">Mock chart</span>
+      </div>
+      <div class="panel">
+        <h3>Productivity by Project / Site</h3>
+        <div class="chart" aria-hidden="true">
+          <svg viewBox="0 0 420 200" preserveAspectRatio="none">
+            <rect x="0" y="0" width="420" height="200" fill="#ffffff"/>
+            <g opacity="0.95">
+              <rect x="40"  y="80" width="36" height="100" fill="#60a5fa"/>
+              <rect x="80"  y="50" width="36" height="130" fill="#7c3aed"/>
+              <rect x="140" y="70" width="36" height="110" fill="#60a5fa"/>
+              <rect x="180" y="40" width="36" height="140" fill="#7c3aed"/>
+              <rect x="240" y="60" width="36" height="120" fill="#60a5fa"/>
+              <rect x="280" y="30" width="36" height="150" fill="#7c3aed"/>
+              <rect x="340" y="90" width="36" height="90"  fill="#60a5fa"/>
+            </g>
+          </svg>
+        </div>
+        <div class="legend"><span><span class="sw" style="background:#60a5fa"></span>Above Target</span><span><span class="sw" style="background:#7c3aed"></span>Below Target</span></div>
+        <span class="watermark">Mock chart</span>
+      </div>
+    </section>
+
+    <div style="height:6px"></div>
+
+    <!-- Filters + Notes -->
+    <section class="grid two-even">
+      <div class="panel">
+        <h3>Filters</h3>
+        <div class="chip"><label>Target Productivity</label>
+          <select><option>≥ 90%</option><option>≥ 85%</option><option>≥ 80%</option></select>
+        </div>
+        <div class="chip" style="margin-top:8px"><label>Show</label>
+          <select><option>All Projects</option><option>Top 10 by hours</option><option>Flagged (variance)</option></select>
+        </div>
+        <p style="color:var(--muted);margin-top:12px">Tip: In a real Power BI build these filters would be slicers bound to your project and labour tables.</p>
+      </div>
+      <div class="panel">
+        <h3>Notes</h3>
+        <ul style="margin:0 0 8px 18px;color:#374151">
+          <li>Focus on <strong>trend vs plan</strong> and <strong>variance hotspots</strong>.</li>
+          <li>Use RAG rules for KPI tiles to guide attention.</li>
+          <li>Provide drill-through to site-level details in the real app.</li>
+        </ul>
+        <p class="watermark">Design intent</p>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
